@@ -68,7 +68,7 @@ function createTable() {
     table.append(tbody);
 
     return [table, thead, tbody];
-}
+};
 
 function createMessage(owner, text, date) {
     const messageBlock = document.createElement('div');

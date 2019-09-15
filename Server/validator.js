@@ -16,8 +16,8 @@ function Validator(model) {
 
     this.isRegistrate = (checkData) => {
         console.log(`isRegistrate`);
-        console.log(checkData.email);
-        console.log(checkData.password);
+        console.log(checkData._email);
+        console.log(checkData._password);
         console.log(_model.length);
         for (let i = 0; i < _model.length; i++) {
             const temp = _model[i].getUser();
@@ -27,7 +27,7 @@ function Validator(model) {
             console.log(temp._email);
             console.log(temp._password);
 
-            if ( temp._email === checkData.email && temp._password === checkData.password) {
+            if ( temp._email === checkData._email && temp._password === checkData._password) {
                 return true;
             }
         }

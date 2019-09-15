@@ -12,5 +12,3 @@ function Model() {
         this.chatMsg =  new Chat();
     }
 };
-
-

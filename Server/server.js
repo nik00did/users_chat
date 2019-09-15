@@ -28,12 +28,12 @@ app.post("/logIn", urlencodedParser, function (req, res) {
     console.log(data.email, data.password);
 
     const newUser = {
-        email: data.email,
-        password: data.password
+        _email: data.email,
+        _password: data.password
     };
 
-    console.log(newUser.email);
-    console.log(newUser.password);
+    console.log(newUser._email);
+    console.log(newUser._password);
 
     console.log(`Валидация`);
     if (!validator.isValid(data.email, data.password)) {
@@ -47,7 +47,6 @@ app.post("/logIn", urlencodedParser, function (req, res) {
         res.send("good_reg");
     } else {
         console.log(`НЕЕЕЕЕЕЕЕ ПРОШЕЛ ПРОВЕРКУ`);
-
         res.send("bad_reg");
     }
 
@@ -67,9 +66,65 @@ app.post("/signIn", urlencodedParser, function (req, res) {
     console.log(data.name, data.email, data.configPassword, data.password);
 
     const newUser = new mod.User(data.name, data.email, data.password);
-    model._usersRegistrate.addUser(newUser);
-    res.send("good_reg");
+
+    if (!validator.isValid(data.email, data.password)) {
+        console.log('is valid');
+    } else {
+        console.log('NO valid');
+    }
+    console.log(`Проверка регистрации`);
+    console.log(newUser._email);
+    console.log(newUser._password);
+
+    if (validator.isRegistrate(newUser)) {
+        console.log(`НЕЕЕЕЕЕЕЕ ПРОШЕЛ РЕГИСТРАЦИЮ`);
+        res.send("bad_reg");
+
+    } else {
+        model._usersRegistrate.addUser(newUser);
+        console.log(`ПРОШЕЛ РЕГИСТРАЦИЮ`);
+        res.send("good_reg");
+    }
+
+
 });
+
+// app.post("/signIn", urlencodedParser, function (req, res) {
+//
+//     if (!req.body) {
+//         return res.sendStatus(400);
+//     }
+//     console.log(req.body);
+//
+//     let data = JSON.stringify(req.body);
+//     data = JSON.parse(data);
+//
+//     console.log("/signIn");
+//     console.log(data.name, data.email, data.configPassword, data.password);
+//
+//     const newUser = new mod.User(data.name, data.email, data.password);
+//
+//
+//
+//     if (!validator.isValid(data.email, data.password)) {
+//         console.log('is valid');
+//     } else {
+//         console.log('NO valid');
+//     }
+//     console.log(`Проверка регистрации`);
+//     if (validator.isRegistrate(newUser)) {
+//         model._usersRegistrate.addUser(newUser);
+//         console.log(`ПРОШЕЛ ПРОВЕРКУ`);
+//         res.send("good_reg");
+//     } else {
+//         console.log(`НЕЕЕЕЕЕЕЕ ПРОШЕЛ ПРОВЕРКУ`);
+//
+//         res.send("bad_reg");
+//     }
+//
+//
+//
+// });
 
 app.post("/getVectorUser", urlencodedParser, function (req, res) {
     console.log(`getVector`);
