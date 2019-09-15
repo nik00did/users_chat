@@ -6,8 +6,8 @@ function Controller() {
     const view = new View();
     const sendData = new SendToServer();
     const model = new Model();
-    model._usersRegistrate.addUser(new User('Nikita', 'email@gmail.com', '123', 'online'));
-    model._usersRegistrate.addUser(new User('Stas', 'email1@gmail.com', '124', 'online'));
+    // model._usersRegistrate.addUser(new User('Nikita', 'email@gmail.com', '123', 'online'));
+    // model._usersRegistrate.addUser(new User('Stas', 'email1@gmail.com', '124', 'online'));
     const validator = new Validator(model._usersRegistrate);
     let style = null;
     let table = [];
@@ -78,12 +78,9 @@ function Controller() {
                     view.page = 2;
                     drawAccountPage();
                     this.init();
-                    //addToTable();
-
                     sendData.postRequest("/getVectorUser", {x: 10}, data => {     // TODO через get запрос
                         console.log(`Вот списяк`);
                         console.log(data);
-
                         const dataObj = JSON.parse(data);
                         console.log(`dataObj`);
                         console.log(dataObj.length);
@@ -103,7 +100,6 @@ function Controller() {
             alert("Братан введи поля");
         }
     };
-
 
     const clickSubmitSignIn = () => {
         const password = view.passwordEnter.value;
@@ -185,7 +181,6 @@ function Controller() {
 
     };
 
-
     const pushToModel = function (dataVec) {
         for (let i = 0; i < dataVec.length; i++) {
             console.log(dataVec[i]._owner);
@@ -197,7 +192,7 @@ function Controller() {
             let msg = createMessage(dataVec[i]._owner, dataVec[i]._text, dataVec[i]._date);
             appendMsg(dataVec[i], view.chatBoard);
         }
-    }
+    };
 
     const clickUsers = () => {
         view.page = 2;
@@ -220,12 +215,11 @@ function Controller() {
 
         console.log(model.getUsersRegistrate());
         for (let i = 0; i < model._usersRegistrate.getUsers().length; i++) {
-            tr = createRow('global__table_row', i, model.getUsersRegistrate()[i].getUser()._name, model.getUsersRegistrate()[i].getUser()._email);
+            tr = createRow('global__table_row', i + 1, model.getUsersRegistrate()[i].getUser()._name, model.getUsersRegistrate()[i].getUser()._email);
             tbody.append(tr);
         }
     };
-}
-
+};
 
 new Controller().init();
 

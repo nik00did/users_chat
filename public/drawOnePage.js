@@ -68,7 +68,7 @@ function createTable() {
     table.append(tbody);
 
     return [table, thead, tbody];
-};
+}
 
 function createMessage(owner, text, date) {
     const messageBlock = document.createElement('div');
@@ -97,7 +97,7 @@ function createMessage(owner, text, date) {
     messageBlock.append(textBlock);
 
     return messageBlock;
-};
+}
 
 
 function appendMsg(dataVec , chatBoard) {
@@ -105,7 +105,7 @@ function appendMsg(dataVec , chatBoard) {
     let msg = createMessage(dataVec._owner, dataVec._text, dataVec._date);
 
     chatBoard.append(msg);
-};
+}
 
 function createChat(chatBoard) {
     if (chatBoard === null)
@@ -292,9 +292,9 @@ function drawPageSignIn() {
 
     name.append(inputName);
 
-    const labelEmail = document.getElementById('labelEmail');
+    const enterDataId = document.getElementById('enterDataId');
 
-    labelEmail.before(name);
+    enterDataId.before(name);
 
     const child = document.createElement('DIV');
     child.classList = 'enter-data__item';
@@ -312,4 +312,60 @@ function drawPageSignIn() {
     const submitLogIn = document.getElementById('submitLogIn');
     submitLogIn.before(child);
     submitLogIn.setAttribute('id', 'submitSignIn');
+}
+
+function loading(id_circle, width_block, width_circle) {
+    const circle = document.getElementById(id_circle);
+    const widthBlock = width_block;
+    const widthCircle = width_circle;
+    let startX = id_circle === 'circle1' || id_circle === 'circle3' ? 75 : id_circle === 'circle2' ? 150 : 0;
+    let startY = id_circle === 'circle2' || id_circle === 'circle4' ? 75 : id_circle === 'circle3' ? 150 : 0;
+    let x = startX, y = startY;
+    let goRightX = id_circle === 'circle1' || id_circle === 'circle4';
+    let goBottomY = id_circle === 'circle1' || id_circle === 'circle2';
+
+    const move = () => {
+        if (goRightX && goBottomY) {
+            if (x < widthBlock - widthCircle && y < (widthBlock - widthCircle) / 2) {
+                x++;
+                y++;
+            } else {
+                if (x >= widthBlock - widthCircle) {
+                    goRightX = !goRightX;
+                }
+            }
+        } else if (!goRightX && !goBottomY) {
+            if (x > 0 && y > (widthBlock - widthCircle) / 2) {
+                x--;
+                y--;
+            } else {
+                if (x <= 0) {
+                    goRightX = !goRightX;
+                }
+            }
+        } else if (goRightX && !goBottomY) {
+            if (y > 0) {
+                x++;
+                y--;
+            } else {
+                if (y <= 0) {
+                    goBottomY = !goBottomY;
+                }
+            }
+        } else if (!goRightX && goBottomY) {
+            if (x > (widthBlock - widthCircle) / 2) {
+                x--;
+                y++;
+            } else {
+                if (y >= (widthBlock - widthCircle) / 2) {
+                    goBottomY = !goBottomY;
+                }
+            }
+        }
+
+        circle.style.transform = `translate(${x - startX}px, ${y - startY}px)`;
+        window.requestAnimationFrame(move);
+    };
+
+    window.requestAnimationFrame(move);
 }
