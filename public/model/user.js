@@ -10,11 +10,3 @@ function User(name, email, password) {
         };
     };
 };
-
-// User.prototype.getUser = () => {
-//     return {
-//         _name: this._name,
-//         _email: this._email,
-//         _password: this._password
-//     };
-// };

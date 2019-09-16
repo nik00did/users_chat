@@ -91,8 +91,8 @@ function createMessage(owner, text, date) {
 
     const textBlock = document.createElement('div');
 
-    dateBlock.setAttribute('class', 'textBlock');
-    dateBlock.textContent = text;
+    textBlock.setAttribute('class', 'textBlock');
+    textBlock.textContent = text;
 
     messageBlock.append(textBlock);
 
@@ -100,7 +100,7 @@ function createMessage(owner, text, date) {
 }
 
 
-function appendMsg(dataVec , chatBoard) {
+function appendMsg(dataVec, chatBoard) {
     chatBoard = document.getElementById('chatWindow');
     let msg = createMessage(dataVec._owner, dataVec._text, dataVec._date);
 
@@ -127,6 +127,7 @@ function createChat(chatBoard) {
 
     const inputFieldMessage = document.createElement('input');
     inputFieldMessage.setAttribute('class', 'global__chat_form-input');
+    inputFieldMessage.setAttribute('id', 'chat-input');
     inputFieldMessage.setAttribute('type', 'text');
     inputFieldMessage.setAttribute('placeholder', 'Write here...');
 
@@ -144,6 +145,15 @@ function createChat(chatBoard) {
 
     chatBoard.append(chat);
 }
+
+function initHeader(name, email) {
+    const headerName = document.getElementById("name_info");
+    const headerEmail = document.getElementById("email_info");
+    headerName.textContent = name;
+    headerEmail.textContent = email;
+
+}
+
 
 function drawAccountPage() {
     const parent = document.getElementById("main");

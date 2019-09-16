@@ -28,7 +28,7 @@ function Validator(model) {
             console.log(temp._password);
 
             if ( temp._email === checkData._email && temp._password === checkData._password) {
-                return true;
+                return temp._name;
             }
         }
         return false;

@@ -1,5 +1,5 @@
 function Message(Owner, Date, Text) {
-    this._owner = Owner;        // user.js
+    this._owner = Owner;
     this._date = Date;
     this._text = Text;
 
@@ -12,4 +12,3 @@ function Message(Owner, Date, Text) {
     };
 };
 
-// module.exports.Message = Message;

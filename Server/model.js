@@ -18,13 +18,6 @@ function Chat() {
     };
 }
 
-// Chat.prototype.getChat = () => {
-//     return this._chat;
-// };
-
-// Chat.prototype.addMessage = message => {
-//     return this._chat.push(message);
-// };
 
 function Message(owner, date, text) {
     this._owner = owner;
@@ -46,6 +39,10 @@ function Users() {
     this.getUsers = () => {
         return this._users;
     };
+
+    this.getLast = () => {
+        return this._users[this._users.length - 1];
+    }
 
     this.addUser = user => {
         return this._users.push(user);

@@ -12,6 +12,9 @@ function Controller() {
     let style = null;
     let table = [];
     let requireVecMsg = true;
+    let myName;
+    let myEmail;
+
 
     this.init = () => {
         switch (view.page) {
@@ -68,13 +71,14 @@ function Controller() {
         let url = "/logIn";
         const data = {
             email: email,
-            password: password,
+            password: password
         };
         if (!validator.isValid(email, password)) {
             sendData.postRequest(url, data, (rez) => {
                 console.log(`rez`);
-                console.log(rez);
-                if (rez === 'good_reg') {
+                const rezObj = JSON.parse(rez);
+                console.log(rezObj.rez);
+                if (rezObj.rez !== 'bad_reg') {
                     view.page = 2;
                     drawAccountPage();
                     this.init();
@@ -90,6 +94,10 @@ function Controller() {
                             console.log(dataObj[i]._password);
                             model._usersRegistrate.addUser(new User(dataObj[i]._name, dataObj[i]._email, dataObj[i]._password));
                         }
+                        myName = rezObj.rez;
+                        myEmail = email;
+                        initHeader(rezObj.rez, email);
+
                         fillTable();
                     })
                 } else {
@@ -136,9 +144,7 @@ function Controller() {
     };
 
     const clickLogOut = () => {
-        requireVecMsg = true;
         model.clearUsers();
-        model.clearMsg();
         view.page = 1;
         logOut();
         this.init();
@@ -152,23 +158,29 @@ function Controller() {
         view.chat.style.background = '#6AABFA';
         view.users.style = Object.create(style);
         this.init();
+        console.log(requireVecMsg);
+
+
         if (!requireVecMsg) {
             console.log('Старые сообщения которые уже в моделе загружаются');
             console.log(model.chatMsg._chat.length);
+            console.log(model.chatMsg._chat);
 
             for (let i = 0; i < model.chatMsg._chat.length; i++) {
                 console.log(model.chatMsg._chat[i]._owner, model.chatMsg._chat[i]._text, model.chatMsg._chat[i]._date);
                 createMessage(model.chatMsg._chat[i]._owner, model.chatMsg._chat._text, model.chatMsg._chat._date);
                 appendMsg(model.chatMsg._chat[i], view.chatBoard);
-
             }
             return;
         }
         console.log('Send to server req');
         sendData.postRequest("/getVectorMsg", {x: 'lox'}, vec => {
-            requireVecMsg = false;
             console.log(`rez`);
             console.log(vec);
+            console.log(`requireVecMsg!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
+            console.log(requireVecMsg);
+            requireVecMsg = false;
+
             if (vec) {
                 const dataVec = JSON.parse(vec);
                 console.log(dataVec);
@@ -183,12 +195,20 @@ function Controller() {
 
     const pushToModel = function (dataVec) {
         for (let i = 0; i < dataVec.length; i++) {
+            console.log("Уже в цикле");
             console.log(dataVec[i]._owner);
             console.log(dataVec[i]._date);
             console.log(dataVec[i]._text);
             let x = new Message(dataVec[i]._owner, dataVec[i]._date, dataVec[i]._text);
+            console.log("Что кладем");
             console.log(x);
             model.chatMsg.addMessage(x);
+            console.log('ВОТ ЧТО КЛАДЕТСЯ В БАЗУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ');
+            console.log('ВОТ ЧТО КЛАДЕТСЯ В БАЗУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ');
+            console.log('ВОТ ЧТО КЛАДЕТСЯ В БАЗУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ');
+            console.log('ВОТ ЧТО КЛАДЕТСЯ В БАЗУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ');
+            console.log('ВОТ ЧТО КЛАДЕТСЯ В БАЗУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ');
+            console.log(model.chatMsg.getChat());
             let msg = createMessage(dataVec[i]._owner, dataVec[i]._text, dataVec[i]._date);
             appendMsg(dataVec[i], view.chatBoard);
         }
@@ -203,10 +223,22 @@ function Controller() {
         view.chat.style = Object.create(style);
         this.init();
         fillTable();
+        initHeader();
     };
 
     const clickSend = () => {
-        console.log('Clicked send');
+        const msgInput = document.getElementById('chat-input');
+
+        let text = msgInput.value;
+        console.log('Заходим в  postRequest')
+        sendData.postRequest("/putMSG", {_owner: myName, _date: Date(), _text: text}, rez => {
+            const rezObj = JSON.parse(rez);
+            console.log(`rezObj`);
+            console.log(rezObj);
+            pushToModel(rezObj);
+            console.log("ВОТ ЧТО МНЕ НАДО ВЫВЕСТИ НА МОЙ УСТАЛЫЙ ЭКРАН");
+        });
+
     };
 
     const fillTable = () => {

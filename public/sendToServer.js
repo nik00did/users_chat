@@ -68,6 +68,9 @@ function SendToServer() {
         // console.log(post);
         // console.log(url);
 
+        console.log(`postRequest ${url}`);
+
+
         xhr.open(post, url, true);
         xhr.setRequestHeader("Content-type", "application/json");
 

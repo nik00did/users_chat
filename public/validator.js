@@ -10,7 +10,7 @@ function Validator(model) {
     const check = (value) => {
         if (value === "" || value === undefined || value === null)
             return true;
-    }
+    };
 
     this.isValidPassword = (pass, configPass) => {
         return !(pass === configPass);

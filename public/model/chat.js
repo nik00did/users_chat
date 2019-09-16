@@ -11,4 +11,3 @@ function Chat() {
 
 };
 
-// module.exports.Chat = Chat;
