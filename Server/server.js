@@ -5,6 +5,12 @@ let bodyParse = require("body-parser");
 let fs = require("fs");
 const urlencodedParser = bodyParse.json();
 
+const db = require('./db/mongo.js');
+
+const dataBase = new db.Mongo();
+dataBase._users.init();
+dataBase._messages.init();
+
 let model = new mod.Model();
 let validator = new val.Validator(model._usersRegistrate.getUsers());
 const app = express();
@@ -82,6 +88,7 @@ app.post("/signIn", urlencodedParser, function (req, res) {
         res.send("bad_reg");
     } else {
         model._usersRegistrate.addUser(newUser);
+        dataBase._users.insert(model._usersRegistrate.getUsersLast());
         console.log(`ПРОШЕЛ РЕГИСТРАЦИЮ`);
         res.send("good_reg");
     }
