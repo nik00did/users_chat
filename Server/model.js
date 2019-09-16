@@ -42,12 +42,16 @@ function Users() {
 
     this.getLast = () => {
         return this._users[this._users.length - 1];
-    }
+    };
 
     this.addUser = user => {
         return this._users.push(user);
     };
-};
+
+    this.getUsersLast = () => {
+        return this._users[this._users.length];
+    };
+}
 
 
 Users.prototype.getUsers = () => {
